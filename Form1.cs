@@ -24,16 +24,14 @@ namespace Calculator
     public partial class MainForm : Form
     {
         string t = "0";
-        double a = 0.0, b = 0.0, temp = 0.0;
-        Opeartor Op = Opeartor.Null;
         List<string> q = new List<string>();
-
+        double memory = 0.0;
 
         public MainForm()
         {
             InitializeComponent();
             labelPrim.Text = t;
-            this.Focus();
+            labelM.Hide();
         }
 
         private void CorrectNumber()
@@ -53,8 +51,6 @@ namespace Calculator
             if (labelPrim.Text.Length > 1 && labelPrim.Text[0] == '-')
                 if (labelPrim.Text[1] == '0' && (labelPrim.Text.IndexOf(",") != 2))
                     labelPrim.Text = labelPrim.Text.Remove(1, 1);
-
-
         }
 
         private void labelPrim_TextChanged(object sender, EventArgs e)
@@ -64,13 +60,11 @@ namespace Calculator
 
         private void MainForm_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == 8)
-                buttonBS_Click(null, null);
+            ////BS <-
+            //if (e.KeyChar == 8)
+            //    buttonBS_Click(null, null);
 
-            if (e.KeyChar == 13)
-                buttonCulc_Click(null, null);
-
-
+            // + - * /
             if (e.KeyChar == 43)
                 buttonPlus_Click(null, null);
             if (e.KeyChar == 45)
@@ -80,30 +74,32 @@ namespace Calculator
             if (e.KeyChar == 47)
                 buttonDiv_Click(null, null);
 
+            // . ,
             if (e.KeyChar == 44 || e.KeyChar == 46)
                 buttonPoint_Click(null, null);
+
 
             if (e.KeyChar != 8 && Char.IsNumber(e.KeyChar))
             {
                 labelPrim.Text += e.KeyChar.ToString();
             }
 
-
-            //label3.Text += e.KeyChar.ToString();
         }
 
+        private void MainForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Back)
+                BS();
+        }
+
+        private void buttonCulc_LostFocus(object sender, EventArgs e)
+        {
+            buttonCulc.Focus();
+        }
 
         private void buttonBS_Click(object sender, EventArgs e)
         {
-            //StringBuilder s = new StringBuilder(labelPrim.Text);
-            //s.Remove(s.Length - 1, 1);
-            //if (s[s.Length-1]== ',' || s[s.Length - 1] == '.')
-            //    s.Remove(s.Length - 1, 1);
-            //labelPrim.Text = s.ToString();
-
-            labelPrim.Text = labelPrim.Text.Remove(labelPrim.Text.Length - 1);
-            //if (labelPrim.Text.Last() == ',' || labelPrim.Text.Last() == '.')
-            //    labelPrim.Text.Remove(labelPrim.Text.Length-1);
+            BS();
         }
 
         private void buttonCE_Click(object sender, EventArgs e)
@@ -128,6 +124,31 @@ namespace Calculator
 
             labelPrim.Text = (RPN.CalculateRPN(q)).ToString();
             q.Clear();
+        }
+
+        private void buttonChangeSign_Click(object sender, EventArgs e)
+        {
+            if (labelPrim.Text == "0")
+                return;
+
+            if (labelPrim.Text[0] == '-')
+                labelPrim.Text = labelPrim.Text.Remove(0, 1);
+            else
+                labelPrim.Text = "-" + labelPrim.Text;
+        }
+
+        private void BS()
+        {
+            //StringBuilder s = new StringBuilder(labelPrim.Text);
+            //s.Remove(s.Length - 1, 1);
+            //if (s[s.Length-1]== ',' || s[s.Length - 1] == '.')
+            //    s.Remove(s.Length - 1, 1);
+            //labelPrim.Text = s.ToString();
+
+            labelPrim.Text = labelPrim.Text.Remove(labelPrim.Text.Length - 1);
+
+            //if (labelPrim.Text.Last() == ',' || labelPrim.Text.Last() == '.')
+            //    labelPrim.Text.Remove(labelPrim.Text.Length-1);
         }
 
         #region buttons 0-9
@@ -188,48 +209,51 @@ namespace Calculator
 
         #endregion
 
-        private void buttonChangeSign_Click(object sender, EventArgs e)
-        {
-            if (labelPrim.Text == "0")
-                return;
-
-            if (labelPrim.Text[0] == '-')
-                labelPrim.Text = labelPrim.Text.Remove(0, 1);
-            else
-                labelPrim.Text = "-" + labelPrim.Text;
-        }
-
         #region Operation
         private void buttonPlus_Click(object sender, EventArgs e)
         {
-            Operation("+");
+            OperationSqrt("+");
         }
 
         private void buttonMinus_Click(object sender, EventArgs e)
         {
-            Operation("-");
+            OperationSqrt("-");
         }
 
         private void buttonMult_Click(object sender, EventArgs e)
         {
-            Operation("*");
+            OperationSqrt("*");
+        }
+
+        private void buttonDiv_Click(object sender, EventArgs e)
+        {
+            OperationSqrt("/");
         }
 
         private void buttonSqrt_Click(object sender, EventArgs e)
         {
             double a = Convert.ToDouble(labelPrim.Text);
-            if (a>=0)
+            if (a >= 0)
             {
                 double b = Math.Sqrt(a);
                 labelPrim.Text = b.ToString();
-                //q.Add(labelPrim.Text);
+                if (q.Count == 0)
+                    q.Add(labelPrim.Text);
                 label3.Text += $"Sqrt({a})";
+                //sqrt = true;
             }
         }
 
-        private void buttonDiv_Click(object sender, EventArgs e)
+
+        private void OperationSqrt(string op)
         {
-            Operation("/");
+            if (label3.Text.Length > 0 && label3.Text.Last() == ')')
+            {
+                label3.Text += op;
+                q.Add(op);
+            }
+            else
+                Operation(op);
         }
 
         private void Operation(string op)
@@ -240,7 +264,7 @@ namespace Calculator
                 s.Remove(s.Length - 1, 1);
             labelPrim.Text = s.ToString();
 
-            if (label3.Text.Length > 0 && labelPrim.Text=="0" && label3.Text.Last() != op[0])
+            if (label3.Text.Length > 0 && labelPrim.Text == "0" && label3.Text.Last() != op[0])
             {
                 label3.Text = label3.Text.Remove(label3.Text.Length - 1) + op;
                 q.RemoveAt(q.Count - 1);
@@ -248,7 +272,6 @@ namespace Calculator
             }
             else if (labelPrim.Text != "0")
             {
-                
                 t = labelPrim.Text;
                 q.Add(t);
                 q.Add(op);
@@ -257,5 +280,36 @@ namespace Calculator
             }
         }
         #endregion
+
+        #region Memory
+        private void buttonMPlus_Click(object sender, EventArgs e)
+        {
+            if (labelPrim.Text == "0")
+                return;
+
+            memory += Convert.ToDouble(labelPrim.Text);
+            labelM.Show();
+        }
+
+        private void buttonMMinus_Click(object sender, EventArgs e)
+        {
+            if (labelPrim.Text == "0")
+                return;
+
+            memory -= Convert.ToDouble(labelPrim.Text);
+            labelM.Show();
+        }
+
+        private void buttonMRC_Click(object sender, EventArgs e)
+        {
+            if (labelPrim.Text == memory.ToString())
+            {
+                memory = 0.0;
+                labelM.Hide();
+            }
+            else
+                labelPrim.Text = memory.ToString();
+        }
+        #endregion 
     }
 }

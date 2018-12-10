@@ -76,6 +76,7 @@ namespace Calculator
             this.buttonMRC.TabIndex = 4;
             this.buttonMRC.Text = "MRC";
             this.buttonMRC.UseVisualStyleBackColor = true;
+            this.buttonMRC.Click += new System.EventHandler(this.buttonMRC_Click);
             // 
             // buttonMPlus
             // 
@@ -85,6 +86,7 @@ namespace Calculator
             this.buttonMPlus.TabIndex = 5;
             this.buttonMPlus.Text = "M+";
             this.buttonMPlus.UseVisualStyleBackColor = true;
+            this.buttonMPlus.Click += new System.EventHandler(this.buttonMPlus_Click);
             // 
             // buttonMMinus
             // 
@@ -94,6 +96,7 @@ namespace Calculator
             this.buttonMMinus.TabIndex = 6;
             this.buttonMMinus.Text = "M-";
             this.buttonMMinus.UseVisualStyleBackColor = true;
+            this.buttonMMinus.Click += new System.EventHandler(this.buttonMMinus_Click);
             // 
             // buttonSqrt
             // 
@@ -321,10 +324,11 @@ namespace Calculator
             this.buttonCulc.Location = new System.Drawing.Point(284, 207);
             this.buttonCulc.Name = "buttonCulc";
             this.buttonCulc.Size = new System.Drawing.Size(67, 96);
-            this.buttonCulc.TabIndex = 28;
+            this.buttonCulc.TabIndex = 0;
             this.buttonCulc.Text = "=";
             this.buttonCulc.UseVisualStyleBackColor = true;
             this.buttonCulc.Click += new System.EventHandler(this.buttonCulc_Click);
+            this.buttonCulc.LostFocus += new System.EventHandler(this.buttonCulc_LostFocus);
             // 
             // buttonPlus
             // 
@@ -423,6 +427,7 @@ namespace Calculator
             this.Name = "MainForm";
             this.Text = "Calculator";
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.MainForm_KeyPress);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyUp);
             this.panel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
