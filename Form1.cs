@@ -12,20 +12,12 @@ using RPNLibrary;
 
 namespace Calculator
 {
-    enum Opeartor
-    {
-        Null,
-        Plus,
-        Minus,
-        Mult,
-        Div
-    }
-
     public partial class MainForm : Form
     {
-        string t = "0";
-        List<string> q = new List<string>();
-        double memory = 0.0;
+        private string t = "0";
+        private List<string> q = new List<string>();
+        private double memory = 0.0;
+        private bool n = false,point =false;
 
         public MainForm()
         {
@@ -36,10 +28,6 @@ namespace Calculator
 
         private void CorrectNumber()
         {
-            ////если есть знак "бесконечность" - не даёт писать цифры после него
-            //if (labelPrim.Text.IndexOf("∞") != -1)
-            //    labelPrim.Text = labelPrim.Text.Substring(0, labelPrim.Text.Length - 1);
-
             if (labelPrim.Text == string.Empty)
                 labelPrim.Text = "0";
 
@@ -60,10 +48,6 @@ namespace Calculator
 
         private void MainForm_KeyPress(object sender, KeyPressEventArgs e)
         {
-            ////BS <-
-            //if (e.KeyChar == 8)
-            //    buttonBS_Click(null, null);
-
             // + - * /
             if (e.KeyChar == 43)
                 buttonPlus_Click(null, null);
@@ -139,12 +123,6 @@ namespace Calculator
 
         private void BS()
         {
-            //StringBuilder s = new StringBuilder(labelPrim.Text);
-            //s.Remove(s.Length - 1, 1);
-            //if (s[s.Length-1]== ',' || s[s.Length - 1] == '.')
-            //    s.Remove(s.Length - 1, 1);
-            //labelPrim.Text = s.ToString();
-
             labelPrim.Text = labelPrim.Text.Remove(labelPrim.Text.Length - 1);
 
             //if (labelPrim.Text.Last() == ',' || labelPrim.Text.Last() == '.')
@@ -204,7 +182,11 @@ namespace Calculator
 
         private void buttonPoint_Click(object sender, EventArgs e)
         {
-            labelPrim.Text += ",";
+            if (!point)
+            {
+                labelPrim.Text += ",";
+                point = true;
+            }
         }
 
         #endregion
@@ -212,22 +194,23 @@ namespace Calculator
         #region Operation
         private void buttonPlus_Click(object sender, EventArgs e)
         {
-            OperationSqrt("+");
+            ExtOperation("+");
         }
 
         private void buttonMinus_Click(object sender, EventArgs e)
         {
-            OperationSqrt("-");
+            ExtOperation("-");
         }
 
         private void buttonMult_Click(object sender, EventArgs e)
         {
-            OperationSqrt("*");
+            ExtOperation("*");
         }
 
         private void buttonDiv_Click(object sender, EventArgs e)
         {
-            OperationSqrt("/");
+            //if (labelPrim.Text != "0")
+                ExtOperation("/");
         }
 
         private void buttonSqrt_Click(object sender, EventArgs e)
@@ -240,17 +223,34 @@ namespace Calculator
                 if (q.Count == 0)
                     q.Add(labelPrim.Text);
                 label3.Text += $"Sqrt({a})";
-                //sqrt = true;
+                n = true;
             }
         }
 
-
-        private void OperationSqrt(string op)
+        private void buttonSqr_Click(object sender, EventArgs e)
         {
-            if (label3.Text.Length > 0 && label3.Text.Last() == ')')
+            double a = Convert.ToDouble(labelPrim.Text);
+
+            double b = Math.Pow(a, 2);
+            labelPrim.Text = b.ToString();
+            if (q.Count == 0)
+                q.Add(labelPrim.Text);
+            label3.Text += $"{a}^2";
+            n = true;
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            ExtOperation("^");
+        }
+
+        private void ExtOperation(string op)
+        {
+            if (label3.Text.Length > 0 && n)
             {
                 label3.Text += op;
                 q.Add(op);
+                n = false;
             }
             else
                 Operation(op);
@@ -258,8 +258,9 @@ namespace Calculator
 
         private void Operation(string op)
         {
+            point = false;
+
             StringBuilder s = new StringBuilder(labelPrim.Text);
-            //s.Remove(s.Length - 1, 1);
             if (s[s.Length - 1] == ',' || s[s.Length - 1] == '.')
                 s.Remove(s.Length - 1, 1);
             labelPrim.Text = s.ToString();
@@ -310,6 +311,8 @@ namespace Calculator
             else
                 labelPrim.Text = memory.ToString();
         }
-        #endregion 
+
+        #endregion
+
     }
 }

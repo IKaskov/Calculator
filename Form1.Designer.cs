@@ -156,6 +156,7 @@ namespace Calculator
             this.buttonSqr.TabIndex = 18;
             this.buttonSqr.Text = "x^2";
             this.buttonSqr.UseVisualStyleBackColor = true;
+            this.buttonSqr.Click += new System.EventHandler(this.buttonSqr_Click);
             // 
             // buttonDiv
             // 
@@ -205,6 +206,7 @@ namespace Calculator
             this.button16.TabIndex = 23;
             this.button16.Text = "x^y";
             this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
             // 
             // buttonMult
             // 
@@ -365,7 +367,7 @@ namespace Calculator
             this.labelM.AutoSize = true;
             this.labelM.BackColor = System.Drawing.Color.Transparent;
             this.labelM.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelM.Location = new System.Drawing.Point(0, 49);
+            this.labelM.Location = new System.Drawing.Point(0, 24);
             this.labelM.Name = "labelM";
             this.labelM.Size = new System.Drawing.Size(29, 25);
             this.labelM.TabIndex = 30;
