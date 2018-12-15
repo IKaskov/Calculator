@@ -11,3 +11,6 @@ D:\C#\App\Calculator\Calculator\bin\Debug\RPNLibrary.dll
 D:\C#\App\Calculator\Calculator\bin\Debug\RPNLibrary.pdb
 D:\C#\App\Calculator\Calculator\obj\Debug\Calculator.csproj.CopyComplete
 D:\C#\App\Calculator\Calculator\obj\Debug\Calculator.csprojAssemblyReference.cache
+D:\C#\App\Calculator\Calculator\bin\Debug\nunit.framework.dll
+D:\C#\App\Calculator\Calculator\bin\Debug\nunit.framework.pdb
+D:\C#\App\Calculator\Calculator\bin\Debug\nunit.framework.xml

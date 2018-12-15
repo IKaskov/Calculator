@@ -61,7 +61,7 @@ namespace Calculator
             this.labelM = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
+            this.labelStatus = new System.Windows.Forms.Label();
             this.labelPrim = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -386,22 +386,22 @@ namespace Calculator
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.label3);
+            this.panel2.Controls.Add(this.labelStatus);
             this.panel2.Location = new System.Drawing.Point(24, 49);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(318, 23);
             this.panel2.TabIndex = 41;
             // 
-            // label3
+            // labelStatus
             // 
-            this.label3.AutoSize = true;
-            this.label3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(318, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(0, 20);
-            this.label3.TabIndex = 32;
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.labelStatus.AutoSize = true;
+            this.labelStatus.Dock = System.Windows.Forms.DockStyle.Right;
+            this.labelStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelStatus.Location = new System.Drawing.Point(318, 0);
+            this.labelStatus.Name = "labelStatus";
+            this.labelStatus.Size = new System.Drawing.Size(0, 20);
+            this.labelStatus.TabIndex = 32;
+            this.labelStatus.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // labelPrim
             // 
@@ -469,7 +469,7 @@ namespace Calculator
         private System.Windows.Forms.Button button0;
         private System.Windows.Forms.Label labelM;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelStatus;
         private System.Windows.Forms.Label labelPrim;
         private System.Windows.Forms.Panel panel2;
     }
