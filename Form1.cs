@@ -17,7 +17,7 @@ namespace Calculator
         private string t = "0";
         private List<string> q = new List<string>();
         private double memory = 0.0;
-        private bool sqrt = false, point = false, sqr = false;
+        private bool sqrt = false, unaryOp = false;
 
         public MainForm()
         {
@@ -100,16 +100,11 @@ namespace Calculator
 
         private void buttonCulc_Click(object sender, EventArgs e)
         {
-            //t = labelPrim.Text;
+            if (unaryOp)
+                unaryOp = false;
+            else
+                labelStatus.Text += labelPrim.Text;
 
-            //q.Add(t);
-
-            //labelStatus.Text = string.Empty;
-
-            //labelPrim.Text = (RPN.CalculateRPN(q)).ToString();
-            //q.Clear();
-
-            labelStatus.Text += labelPrim.Text;
 
             labelPrim.Text = (RPN.CalculateRPN(labelStatus.Text)).ToString();
 
@@ -199,31 +194,30 @@ namespace Calculator
         #region Operation
         private void buttonPlus_Click(object sender, EventArgs e)
         {
-            //ExtOperation("+");
-
             TempOperation("+");
         }
 
         private void TempOperation(string op)
         {
             if (labelPrim.Text == "0")
-            {
                 ChangeOperationSign(op);
-                return;
-            }
-
-            RemovePoint();
-
-            if (sqr)
-            {
-                labelStatus.Text += op;
-                labelPrim.Text = string.Empty;
-            }
             else
             {
-                labelStatus.Text += labelPrim.Text + op;
-                labelPrim.Text = string.Empty;
+                RemovePoint();
+
+                if (unaryOp)
+                {
+                    labelStatus.Text += op;
+                    labelPrim.Text = string.Empty;
+                    unaryOp = false;
+                }
+                else
+                {
+                    labelStatus.Text += labelPrim.Text + op;
+                    labelPrim.Text = string.Empty;
+                }
             }
+
         }
 
         private void ChangeOperationSign(string op)
@@ -232,84 +226,55 @@ namespace Calculator
                 && (!Char.IsNumber(labelStatus.Text.Last())
                 && labelStatus.Text.Last() != ')')
                 && labelStatus.Text.Last() != op[0])
-            {
-                StringBuilder s = new StringBuilder(labelStatus.Text);
-                s.Remove(s.Length - 1, 1);
-                labelStatus.Text = s.ToString() + op;
-            }
+                labelStatus.Text = labelStatus.Text.TrimEnd(labelStatus.Text.Last()) + op;
         }
 
         private void RemovePoint()
         {
             if (labelPrim.Text.Last() == ',' || labelPrim.Text.Last() == '.')
             {
-                StringBuilder s = new StringBuilder(labelPrim.Text);
-                s.Remove(s.Length - 1, 1);
-                labelPrim.Text = s.ToString();
+                //    StringBuilder s = new StringBuilder(labelPrim.Text);
+                //    s.Remove(s.Length - 1, 1);
+                //    labelPrim.Text = s.ToString();
+
+                labelPrim.Text = labelPrim.Text.Remove(labelPrim.Text.Length - 1);
             }
         }
 
         private void buttonMinus_Click(object sender, EventArgs e)
         {
-            //ExtOperation("-");
-
             TempOperation("-");
         }
 
         private void buttonMult_Click(object sender, EventArgs e)
         {
-            //ExtOperation("*");
-
             TempOperation("*");
         }
 
         private void buttonDiv_Click(object sender, EventArgs e)
         {
-            //ExtOperation("/");
-
             TempOperation("/");
         }
 
         private void buttonSqrt_Click(object sender, EventArgs e)
         {
-            //double a = Convert.ToDouble(labelPrim.Text);
-            //if (a >= 0)
-            //{
-            //    double b = Math.Sqrt(a);
-            //    labelPrim.Text = b.ToString();
-            //    if (q.Count == 0)
-            //        q.Add(labelPrim.Text);
-            //    label3.Text += $"Sqrt({a})";
-            //    sqrt = true;
-            //}
-
             double a = Convert.ToDouble(labelPrim.Text);
             if (a >= 0)
             {
                 labelStatus.Text += $"Sqrt({a})";
                 labelPrim.Text = Math.Sqrt(a).ToString();
+                unaryOp = true;
             }
         }
 
         private void buttonSqr_Click(object sender, EventArgs e)
         {
-            //double a = Convert.ToDouble(labelPrim.Text);
-
-            //double b = Math.Pow(a, 2);
-            //labelPrim.Text = b.ToString();
-            //if (q.Count == 0)
-            //    q.Add(labelPrim.Text);
-            //label3.Text += $"{a}^2";
-            //sqrt = true;
-
             TempOperation("^2");
-            sqr = true;
+            unaryOp = true;
         }
 
         private void button16_Click(object sender, EventArgs e)
         {
-            //ExtOperation("^");
-
             TempOperation("^");
         }
 
